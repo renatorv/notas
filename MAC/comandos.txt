@@ -1,0 +1,2 @@
+# VER PATH
+cat /etc/paths

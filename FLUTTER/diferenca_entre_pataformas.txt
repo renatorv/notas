@@ -1,0 +1,7 @@
+
+# SELEÇÃO DA PLATAFORMA
+Theme.of(context).platform == TargetPlatform.iOS
+	? CupertinoButton()
+	: RaisedButton()
+
+*************************************************************************************************************************************************
