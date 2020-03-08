@@ -1,0 +1,48 @@
+
+# VER TIPO DE VARIAVEL
+var c = 'Vc é muito legal';
+print(c is String); => true
+
+# LISTA
+# LISTAS ACEITA VALORES DUPLICADOS
+var nomes = ['Ana','Bia','Carlos'];
+nomes.add('Daniel');
+nomes.add('Daniel');
+nomes.add('Daniel');
+print(nomes.elementAt(0)); => Ana
+ou
+print(nomes[5]); => Daniel
+
+# Set (Conjunto)
+# NAO ACEITA DUPLICADOS
+var conjunto = {0,1,2,3,4,4,4,4};
+Set<int> conjunto = {0,1,2,3,4,4,4,4};
+print(conjunto.length); => retorna 5, pois o conjunto não aceita duplicados
+print(conjunto is Set); => true
+
+# Map, estrutura chave e valor
+Map<String, double> notasDosAlunos = {
+    "Ana": 9.7,
+    "Bia": 9.2,
+    "Carlos": 7.8,
+};
+
+for(var chave in notasDosAlunos.keys)
+{
+    print('chave = $chave');
+}
+
+for(var valor in notasDosAlunos.values)
+{
+    print('valor = $valor');
+}
+
+for(var registro in notasDosAlunos.entrie)
+{
+    print('${registro.key} = ${registro.value}');
+}
+
+# DYNAMIC
+dynamic x = 'teste';
+x = 123;
+x = false;
