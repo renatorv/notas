@@ -1,0 +1,2 @@
+
+http://apimobile.acherapido.kinghost.net/api/Cidades/GetCidade/

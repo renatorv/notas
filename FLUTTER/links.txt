@@ -3,3 +3,15 @@
 https://resocoder.com/2019/04/27/flutter-routes-navigation-parameters-named-routes-ongenerateroute/
 
 *************************************************************************************************************************************************
+#  CRIA O MODEL
+https://javiercbk.github.io/json_to_dart/
+
+{
+    "IdCidade": "",
+    "DescricaoCidade": "",
+    "DataModificacao": "",
+    "Ativa": "",
+    "Imagem": ""
+}
+
+*************************************************************************************************************************************************
