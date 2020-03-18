@@ -1,0 +1,13 @@
+
+pubspec.yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  mobx:
+  flutter_mobx:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mobx_codegen:
+  build_runner:
