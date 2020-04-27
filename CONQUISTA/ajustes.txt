@@ -1,0 +1,29 @@
+.painel{
+width: 16%;
+height: 100%;
+/*background-color: #f44336;*/
+background-image: url(../img/bg-conquista.png);
+background-repeat: repeat-y;
+float: left;
+z-index: 1004;
+left: 0;
+bottom: 0;
+top: 56px;
+}
+
+.menu-atalho{
+width: 84%;
+height: 89%;
+background-color: #fff;
+float: left;
+position: relative;
+left: 16%;
+top: 4px;
+}
+
+<key>NSCameraUsageDescription</key>
+<string>Camera usada para ler codigo de barras</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Melhor rota do usuario para um supermercado</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Leitura do codigo de barras</string>
