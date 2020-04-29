@@ -27,3 +27,16 @@ top: 4px;
 <string>Melhor rota do usuario para um supermercado</string>
 <key>NSPhotoLibraryUsageDescription</key>
 <string>Leitura do codigo de barras</string>
+
+Panfleto
+function clickImg(imagem)
+{
+    x = 'http://'+ imagem;
+    //PhotoViewer.show(x, 'Ofertas Conquista Supermercados', { share: true });
+    PhotoViewer.show(x)
+}
+
+Gerar icones: 
+https://appicon.co/
+https://appiconmaker.co/Home/Index/85ef115a-6fb4-444d-8a2d-850aa73cec7a
+https://medium.com/@espinha12/tamanho-de-%C3%ADcones-para-publica%C3%A7%C3%A3o-ios-app-8747b92f38ee
