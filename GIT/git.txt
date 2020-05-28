@@ -1,0 +1,13 @@
+dentro da pasta...executar no cmd
+
+echo "# despesas" >> README.md
+ 
+git init
+
+git add *
+
+git commit -m "first commit"
+
+git remote add origin https://github.com/renatorv/despesas.git
+
+git push -u origin master
