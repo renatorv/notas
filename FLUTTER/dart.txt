@@ -1,4 +1,12 @@
 
+# SUB LISTA
+listaCartoesUsuarioCartaoVirtual = listaCartoesUsuario.where((crt) => crt["TIPO_CTR"] == 'CON').toList();
+
+# DEIXAR SOMENTE NÚMEROS
+final iReg = RegExp(r'(\d+)');
+String decrypted = iReg.allMatches(encrypter.decrypt64(palavra)).map((m) => m.group(0)).join('');
+USEI EM: /Users/rodrigomendoncasouza/IdeaProjects/APLICATIVOS/app_volus/lib/controllers/seguranca.dart
+
 # VER TIPO DE VARIAVEL
 var c = 'Vc é muito legal';
 print(c is String); => true
