@@ -1,0 +1,31 @@
+NO pubspec.yaml
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  image_path: "assets/icons/icone-default.png" # caminho da imagem
+  android: true
+  ios: true
+
+flutter pub get
+flutter pub run flutter_launcher_icons:main
+
+DEPOIS ABRIR O PROJETO NO ANDROID STUDIO:
+
+abrir => android - app src main res -> botao direito - new  - Image Asset ( Configure Image Asset )
+
+em path, escolher o caminho da imagem. 
+em resize: aproximadamente 74% - next - finish
+
+https://www.youtube.com/watch?v=hpQenyqxTmw
+
+auxiliar:
+
+https://appicon.co/
+https://stackoverflow.com/questions/53967670/flutter-launcher-icon-not-getting-changed
+https://bendyworks.com/blog/a-month-of-flutter-awesome-adaptive-icons
+https://pub.dev/packages/flutter_launcher_icons
+https://www.appsdeveloperblog.com/app-icon-in-flutter/
