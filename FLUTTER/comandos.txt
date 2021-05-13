@@ -1,4 +1,7 @@
 
 flutter create --androidx <nome>
 
+flutter create -i swift -a java --androidx --org=app.renatorv flutter_api_rest
+
 *************************************************************************************************************************************************
+
