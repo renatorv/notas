@@ -1,0 +1,19 @@
+
+Exemplo com LayoutBuilder, que gera uma tela com elementos infinitos na Column (usei na Politica de Privacidade)
+
+
+        body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return SingleChildScrollView(
+              child: new ConstrainedBox(
+                constraints: constraints.copyWith(minHeight: constraints.maxHeight, maxHeight: double.infinity),
+                child: Column(
+                  children: [
+                    
+                  ],
+                
+                ),
+              ),
+            );
+          },
+        ),
