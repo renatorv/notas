@@ -1,0 +1,34 @@
+https://www.youtube.com/watch?v=nuOrUhOYU0Y
+
+https://medium.com/flutter-community/flutter-2019-real-splash-screens-tutorial-16078660c7a1
+
+no ios:
+    abrir xcode Runner => Runner => LaunchScreen.storyboard => alterar background
+
+no android: 
+    C:\Users\Renato\Desktop\AppFrotasVolus\android\app\src\main\res\drawable\launch_background.xml
+
+    observar que pode ter dois arquivos: launch_background.xml, fazer nos dois
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <!-- Modify this file to customize your launch splash screen -->
+    <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+        <!-- <item android:drawable="@android:color/white" /> -->
+        <item>
+            <shape>
+                <solid android:color="#DCDC6E" />
+            </shape>
+        </item>
+
+        <!-- You can insert your own image assets here -->
+        <!-- <item>
+            <bitmap
+                android:gravity="center"
+                android:src="@mipmap/launch_image" />
+        </item> -->
+        <!-- <item>
+            <bitmap
+                android:gravity="center"
+                android:src="@drawable/logo" />
+        </item> -->
+    </layer-list>
