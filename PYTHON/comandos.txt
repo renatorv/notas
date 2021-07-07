@@ -1,0 +1,5 @@
+
+CRIAR ENV - WIN
+python -m venv venv
+venv\Scripts\activate
+deactivate
