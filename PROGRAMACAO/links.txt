@@ -1,3 +1,9 @@
 
 Repository Pattern no Flutter
 https://www.youtube.com/watch?v=Q05t3mgaMfk
+
+
+MySql Remoto
+https://remotemysql.com/databases.php
+renatorv@gmail.com
+ch147172 ou ch+147172
