@@ -1,0 +1,18 @@
+// Converte uma lista de objetos para um Map<String, double>
+_combustiveis.forEach((comb) => _jsonCombustiveis[comb.descricao] = comb.utilizado);
+
+
+
+ou 
+
+
+
+
+Map<String, double> setDataMap(){
+    for(var i=0; i < getCombustivelGrafico.length; i++){
+      _dataMap.addAll({
+        getCombustivelGrafico[i].descricao : getCombustivelGrafico[i].total_gasto
+      });
+    }
+    return _dataMap;
+}
