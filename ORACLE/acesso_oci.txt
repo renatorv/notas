@@ -1,0 +1,22 @@
+Acesso Oracle
+
+# Criar chave: ssh-keygen -t rsa
+	MAC: /Users/renatoalves/.ssh/id_rsa
+
+ssh -i /Users/renatoalves/.ssh/id_rsa < Username >@< ip_maquina >
+
+ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@129.159.81.170
+
+# Liberar portas ==> https://www.youtube.com/watch?v=Jxs9M8qZkRM&t=175s
+	sudo apt update
+	sudo apt install nginx
+	sudo systemctl start nginx
+	sudo ufw status -> vai estar inativo
+	sudo apt remove netfilter-persistent
+	sudo ufw allow 22/tcp
+	sudo ufw enable
+	sudo ufw status
+	sudo ufw allow 80/tcp
+	sudo reboot
+	sudo systemctl status nginx
+	sudo ufw status
