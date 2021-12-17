@@ -1,0 +1,27 @@
+
+Erro:
+A RenderFlex overflowed by 11 pixels on the right.
+
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Departamento: ',
+                      style: TextStyle(
+                        fontSize: responsive.dp(1.6),
+                        color: Theme.ThemeColors.amareloSecundario,
+                      ),
+                    ),
+                    Flexible(         <==
+                      child: Text(
+                        _historicoModel.departamento,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: responsive.dp(1.4),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),

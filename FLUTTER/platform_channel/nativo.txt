@@ -1,0 +1,390 @@
+package br.com.volus.appvoluspos;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
+
+import android.os.Bundle;
+import android.content.Intent;
+import android.os.Build;
+
+import br.com.gertec.gedi.exceptions.GediException;
+import java.util.List;
+import java.util.Map;
+
+
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.plugin.common.MethodChannel;
+
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.view.View;
+
+
+public class MainActivity extends FlutterActivity {
+    public static final String G700 = "GPOS700";
+    private MethodChannel.Result _result;
+    public static String Model = Build.MODEL;
+
+    private GertecPrinter gertecPrinter;
+    private ConfigPrint configPrint = new ConfigPrint();
+    private SatLib satLib;
+    private static final String CHANNEL = "samples.flutter.dev/gedi";
+
+
+    /*protected void onActivityResult(int acao, int resultCode, @Nullable Intent data) {
+        System.out.println("ffffffffffffffffffffffffffffffffffffffffffffffff");
+        System.out.println(acao);
+        if (acao == 99){
+            String nrCartao = null;
+            if (resultCode == RESULT_OK && data != null) {
+                nrCartao =  data.getStringExtra("trilhaCartao");
+                _result.success(nrCartao);
+                System.out.println("nrCarta -> "+ nrCartao);
+
+            } else {
+                _result.notImplemented();
+            }
+
+        }
+    }
+
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        GeneratedPluginRegistrant.registerWith(this);
+        new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+                        if (call.method.equals("lertrilha")) {
+
+                            try {
+                                intent = new Intent(this, LerTrilha.class);
+                                startActivityForResult(intent, 99);
+                            } catch (Exception e) {
+                                result.notImplemented();
+                            }
+                        }
+                    }});
+    }*/
+
+
+
+
+
+
+    protected void onResume() {
+        super.onResume();
+    }
+
+    public MainActivity() {
+        super();
+    }
+
+    protected void onActivityResult(int acao, int resultCode, @Nullable Intent data) {
+        System.out.println("ffffffffffffffffffffffffffffffffffffffffffffffff");
+        System.out.println(acao);
+        if (acao == 99){
+            String nrCartao = null;
+            if (resultCode == RESULT_OK && data != null) {
+                nrCartao =  data.getStringExtra("trilhaCartao");
+                System.out.println("nrCarta -> "+ nrCartao);
+                _result.success(nrCartao);
+
+            } else {
+                _result.notImplemented();
+            }
+
+        }
+    }
+
+
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
+                .setMethodCallHandler((call, result) -> {
+                    _result = result;
+                    Map<String, String> map;
+                    Bundle bundle = new Bundle();
+                    Intent intent = null;
+                    switch (call.method) {
+                        // Inicia o intent que vai fazer a leitura do Nfc pelo metodo Nativo
+                        case "lertrilha":
+                            try {
+                                intent = new Intent(this, LerTrilha.class);
+                                startActivityForResult(intent, 99);
+                            } catch (Exception e) {
+                                result.notImplemented();
+                            }
+                            break;
+                        case "checarImpressora":
+                            try {
+                                gertecPrinter.getStatusImpressora();
+                                result.success(gertecPrinter.isImpressoraOK());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case "EnviarTesteFim":
+                            _result.success(satLib.enviarTesteFim(call.argument("codigoAtivar"),
+                                    call.argument("xmlVenda"), call.argument("random")));
+                            break;
+
+                        // Esta função vai chamar as classes para realizar as impressões de acordo com
+                        // as configurações recebidas do flutter
+                        case "fimimpressao":
+                            try {
+                                gertecPrinter.ImpressoraOutput();
+                                result.success("Finalizou impressao");
+                            } catch (GediException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case "avancaLinha":
+                            try {
+                                gertecPrinter.avancaLinha(call.argument("quantLinhas"));
+                            } catch (GediException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case "teste":
+                            try {
+                                Class<?> c = Class.forName("android.os.SystemProperties");
+                                // Method get = c.getMethod("get", String.class);
+                                // String device_id = 
+                                //             "SERIAL: " + Build.SERIAL + "\n" +
+                                //             "MODEL: " + Build.MODEL + "\n" +
+                                //             "ID: " + Build.ID + "\n" +
+                                //             "Manufacture: " + Build.MANUFACTURER + "\n" +
+                                //             "Brand: " + Build.BRAND + "\n" +
+                                //             "Type: " + Build.TYPE + "\n" +
+                                //             "User: " + Build.USER + "\n" +
+                                //             "BASE: " + Build.VERSION_CODES.BASE + "\n" +
+                                //             "INCREMENTAL: " + Build.VERSION.INCREMENTAL + "\n" +
+                                //             "SDK:  " + Build.VERSION.SDK + "\n" +
+                                //             "BOARD: " + Build.BOARD + "\n" +
+                                //             "BRAND: " + Build.BRAND + "\n" +
+                                //             "HOST: " + Build.HOST + "\n" +
+                                //             "FINGERPRINT: " + Build.FINGERPRINT + "\n" +
+                                //             "Version Code: " + Build.VERSION.RELEASE + "\n" +
+                                //             "Display : " + Build.DISPLAY;
+                                // String device_id = 
+                                //                     // "\nDEVICE.ID : " + getDeviceId(context)
+                                //                     // + "\nUSER.ID : " + getUserIdentity(context)
+                                //                     // + "\nAPP.VERSION : " + getAppVersion(context)
+                                //                     // + "\nLAUNCHER.APP : " + getCurrentLauncherApp(context)
+                                //                     "\nVERSION.RELEASE : " + Build.VERSION.RELEASE
+                                //                     + "\nVERSION.INCREMENTAL : " + Build.VERSION.INCREMENTAL
+                                //                     + "\nVERSION.SDK.NUMBER : " + Build.VERSION.SDK_INT
+                                //                     + "\nBOARD : " + Build.BOARD
+                                //                     + "\nBOOTLOADER : " + Build.BOOTLOADER
+                                //                     + "\nBRAND : " + Build.BRAND
+                                //                     + "\nCPU_ABI : " + Build.CPU_ABI
+                                //                     + "\nCPU_ABI2 : " + Build.CPU_ABI2
+                                //                     + "\nDISPLAY : " + Build.DISPLAY
+                                //                     + "\nFINGERPRINT : " + Build.FINGERPRINT
+                                //                     + "\nHARDWARE : " + Build.HARDWARE
+                                //                     + "\nHOST : " + Build.HOST
+                                //                     + "\nID : " + Build.ID
+                                //                     + "\nMANUFACTURER : " + Build.MANUFACTURER
+                                //                     + "\nMODEL : " + Build.MODEL
+                                //                     + "\nPRODUCT : " + Build.PRODUCT
+                                //                     + "\nSERIAL : " + Build.SERIAL
+                                //                     + "\nTAGS : " + Build.TAGS
+                                //                     + "\nTIME : " + Build.TIME
+                                //                     + "\nTYPE : " + Build.TYPE
+                                //                     + "\nUNKNOWN : " + Build.UNKNOWN
+                                //                     + "\nUSER : " + Build.USER;
+
+                                final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+
+                                final String tmDevice, tmSerial, androidId, sim;
+                                tmDevice = "" + tm.getDeviceId();
+                                tmSerial = "" + tm.getSimSerialNumber();
+                                androidId = "" + android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+                                sim = "" + tm.getSimSerialNumber();
+
+                                // UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+                                // String device_id = deviceUuid.toString();
+
+                                result.success(tmDevice +" "+ tmSerial +" "+ androidId +" "+ sim);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case "imprimir":
+                            try {
+                                gertecPrinter.getStatusImpressora();
+                                if (gertecPrinter.isImpressoraOK()) {
+                                    String tipoImpressao = call.argument("tipoImpressao");
+                                    String mensagem = call.argument("mensagem");
+                                    switch (tipoImpressao) {
+                                        case "Texto":
+                                            List<Boolean> options = call.argument("options");
+                                            configPrint.setItalico(options.get(1));
+                                            configPrint.setSublinhado(options.get(2));
+                                            System.out.println(call.argument("size").toString());
+                                            configPrint.setNegrito(options.get(0));
+                                            System.out.println(call.argument("font").toString());
+                                            configPrint.setTamanho(call.argument("size"));
+                                            configPrint.setFonte(call.argument("font"));
+                                            configPrint.setAlinhamento(call.argument("alinhar"));
+                                            gertecPrinter.setConfigImpressao(configPrint);
+                                            gertecPrinter.imprimeTexto(mensagem);
+                                            break;
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                    }
+                });
+    }
+
+    private void ImprimeTodasAsFucoes() {
+        configPrint.setItalico(false);
+        configPrint.setNegrito(true);
+        configPrint.setTamanho(20);
+        configPrint.setFonte("MONOSPACE");
+        gertecPrinter.setConfigImpressao(configPrint);
+        try {
+            gertecPrinter.getStatusImpressora();
+            // Imprimindo Imagem
+            configPrint.setiWidth(300);
+            configPrint.setiHeight(130);
+            configPrint.setAlinhamento("CENTER");
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("==[Iniciando Impressao Imagem]==");
+            gertecPrinter.imprimeImagem("logogertec");
+            gertecPrinter.avancaLinha(10);
+            gertecPrinter.imprimeTexto("====[Fim Impressão Imagem]====");
+            gertecPrinter.avancaLinha(10);
+            // Fim Imagem
+
+            // Impressão Centralizada
+            configPrint.setAlinhamento("CENTER");
+            configPrint.setTamanho(30);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("CENTRALIZADO");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Centralizada
+
+            // Impressão Esquerda
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(40);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("ESQUERDA");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Esquerda
+
+            // Impressão Direita
+            configPrint.setAlinhamento("RIGHT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("DIREITA");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Direita
+
+            // Impressão Negrito
+            configPrint.setNegrito(true);
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("=======[Escrita Netrigo]=======");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Negrito
+
+            // Impressão Italico
+            configPrint.setNegrito(false);
+            configPrint.setItalico(true);
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("=======[Escrita Italico]=======");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Italico
+
+            // Impressão Italico
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(true);
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("======[Escrita Sublinhado]=====");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Italico
+
+            // Impressão BarCode 128
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(false);
+            configPrint.setAlinhamento("CENTER");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("====[Codigo Barras CODE 128]====");
+            gertecPrinter.imprimeBarCode("12345678901234567890", 120, 120, "CODE_128");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão BarCode 128
+
+            // Impressão Normal
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(true);
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("=======[Escrita Normal]=======");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Normal
+
+            // Impressão Normal
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(true);
+            configPrint.setAlinhamento("LEFT");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("=========[BlankLine 50]=========");
+            gertecPrinter.avancaLinha(50);
+            gertecPrinter.imprimeTexto("=======[Fim BlankLine 50]=======");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão Normal
+
+            // Impressão BarCode 13
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(false);
+            configPrint.setAlinhamento("CENTER");
+            configPrint.setTamanho(20);
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("=====[Codigo Barras EAN13]=====");
+            gertecPrinter.imprimeBarCode("7891234567895", 120, 120, "EAN_13");
+            gertecPrinter.avancaLinha(10);
+            // Fim Impressão BarCode 128
+
+            // Impressão BarCode 13
+            gertecPrinter.setConfigImpressao(configPrint);
+            gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec LIB]==");
+            gertecPrinter.avancaLinha(10);
+            gertecPrinter.imprimeBarCode("Gertec Developer Partner LIB", 240, 240, "QR_CODE");
+
+            configPrint.setNegrito(false);
+            configPrint.setItalico(false);
+            configPrint.setSublinhado(false);
+            configPrint.setAlinhamento("CENTER");
+            configPrint.setTamanho(20);
+            gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec IMG]==");
+            gertecPrinter.imprimeBarCodeIMG("Gertec Developer Partner IMG", 240, 240, "QR_CODE");
+
+            gertecPrinter.avancaLinha(40);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}

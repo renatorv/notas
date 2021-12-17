@@ -1,0 +1,13 @@
+
+static const platform = const MethodChannel('samples.flutter.dev/gedi');
+
+  Future<void> teste() async {
+    try {
+      String teste = await platform.invokeMethod('teste');
+      print(teste);
+    } on PlatformException catch (e) {
+      print(e.message);
+    }
+
+    update();
+  }
