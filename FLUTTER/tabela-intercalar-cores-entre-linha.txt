@@ -1,0 +1,61 @@
+https://www.flutter-code.com/2022/01/flutter-table-row-decoration.html?m=0
+
+main.dart
+
+
+import 'dart:math';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.pink),
+      home: Scaffold(
+          appBar: AppBar(
+              title: const Text("Flutter - Table Row Decoration")
+          ),
+          body: bodyContent()
+      ),
+    ),
+  );
+}
+
+bodyContent(){
+  getDecoration([bool even = true]){
+    return BoxDecoration(
+        color: even? Colors.green.shade100 : Colors.green.shade200,
+        shape: BoxShape.rectangle,
+        border: const Border(
+            bottom : BorderSide( color: Colors.black87,
+                width: 1, style: BorderStyle.solid
+            )
+        )
+    );
+  }
+
+  final rows = <TableRow>[];
+  for (var i = 0; i < 10; i++) {
+    rows.add(
+        TableRow(
+            decoration: getDecoration( i % 2 == 0),
+            children: [randomText(),randomText(),randomText()]
+        )
+    );
+  }
+
+  return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Table(children: rows)
+  );
+}
+
+randomText(){
+  return Padding(
+    padding: const EdgeInsets.all(12),
+    child: Text(
+      Random().nextInt(500).toString(),
+      style: const TextStyle(fontWeight: FontWeight.bold),
+      textAlign: TextAlign.center
+    )
+  );
+}
