@@ -29,3 +29,14 @@ https://stackoverflow.com/questions/53967670/flutter-launcher-icon-not-getting-c
 https://bendyworks.com/blog/a-month-of-flutter-awesome-adaptive-icons
 https://pub.dev/packages/flutter_launcher_icons
 https://www.appsdeveloperblog.com/app-icon-in-flutter/
+
+
+OBSERVAÇÃO: PROBLEMA DO "IMAGE ASSET" NÃO APARECER:
+https://www.youtube.com/watch?v=6TQoSMBhE6k
+
+File -> open -> entrar no projeto e selecionar a pasta "android" mandar abrir.
+
+PARA CRIAR O ICONE REDONDO NO POS TIVE PROBLEMAS.
+
+DEPOIS DE GERAR PEGUEI UMA IMAGEM REDONDA E COLOQUEI COMO IMAGEM ORIGINAL PARA PODER
+GERAR NOVAMENTE.

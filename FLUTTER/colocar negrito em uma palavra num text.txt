@@ -1,0 +1,58 @@
+usei no projeto do POS: lib\app\modules\configura_pos\configura_pos_screen.dart
+                
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.black,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text:
+                                                'Favor entrar em contato com a Vólus no telefone: ',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' (64) 2101-5500',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                ', setor de tecnologia com seu CNPJ e o código a seguir: ',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' ${_.nrSerie.toString()}.',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: responsive.dp(2),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+

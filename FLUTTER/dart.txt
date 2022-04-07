@@ -1,4 +1,17 @@
 
+bool validaTelefone(String telefone) {
+  final foneRegExp = RegExp(r'(^[1-9][0-9]9[6-9]{1}[0-9]{7})');
+   telefone = telefone
+      .replaceAll('(', '')
+      .replaceAll(')', '')
+      .replaceAll('-', '')
+      .replaceAll(' ', '')
+      .trim();
+  return foneRegExp.hasMatch(telefone);
+}
+
+
+
 # SUB LISTA
 listaCartoesUsuarioCartaoVirtual = listaCartoesUsuario.where((crt) => crt["TIPO_CTR"] == 'CON').toList();
 
