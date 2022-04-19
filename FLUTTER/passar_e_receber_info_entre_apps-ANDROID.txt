@@ -1,0 +1,118 @@
+APP 1
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodChannel;
+
+public class MainActivity extends FlutterActivity {
+    private static final String CHANNEL = "volus.dev/chama-viagem";
+    public Context context;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getApplicationContext();
+    }
+
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        super.configureFlutterEngine(flutterEngine);
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
+                .setMethodCallHandler(
+                        (call, result) -> {
+                            if (call.method.equals("chamaAppAndroid")) {
+
+                                Intent intent = context.getPackageManager().getLaunchIntentForPackage("br.com.volus.appvolusviagem.appvolusviagem");
+
+                                if (intent != null) {
+                                    // O app viagem está instalado
+                                    String cpf = call.argument("cpf");
+                                    System.out.println("#####cpf:");
+                                    System.out.println(cpf);
+
+                                    intent.putExtra("cpfviagem", cpf);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//precisa????
+                                    startActivity(intent);
+                                } else {
+                                    // O app viagem não está instalado, abre a loja
+                                    intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=br.com.volus.app_volus"));
+                                    startActivity(intent);
+                                }
+                            } else {
+                                result.notImplemented();
+                            }
+                        });
+    }
+}
+
+
+APP 2
+
+import io.flutter.embedding.android.FlutterActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodChannel;
+
+public class MainActivity extends FlutterActivity {
+    private static final String CHANNEL = "volus.dev/chama-viagem";
+
+    @Override
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        super.configureFlutterEngine(flutterEngine);
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
+                .setMethodCallHandler(
+                        (call, result) -> {
+
+                            String sharedText = "";
+
+                            if (call.method.equals("appviagem")) {
+
+                                // Toast.makeText(getApplicationContext(), "123456789", 5000).show();
+
+                                Intent intent = getIntent();
+
+                                if(intent.hasExtra("cpfviagem")){
+
+                                    // Toast.makeText(getApplicationContext(), "12345678910", 5000).show();
+
+                                    sharedText = intent.getStringExtra("cpfviagem");
+
+                                    Toast toast=Toast.makeText(getApplicationContext(),sharedText,Toast.LENGTH_SHORT);
+                                    toast.setMargin(50,50);
+                                    toast.show();
+
+                                    result.success(sharedText);
+                                }else{
+                                    result.success("");
+                                }
+                            } else {
+                                result.notImplemented();
+                            }
+                        }
+                );
+    }
+}
+
+PESQUISA: android send hasextra to another application
+
+LINKS:
+https://stackoverflow.com/questions/3872063/how-to-launch-an-activity-from-another-application-in-android
+https://stackoverflow.com/questions/45433120/how-to-use-putextra-to-open-another-app-and-send-some-data-for-it
+https://stackoverflow.com/questions/2139134/how-to-send-an-object-from-one-android-activity-to-another-using-intents
+https://stackoverflow.com/questions/57870263/how-to-update-getintent-when-called-another-application
+https://stackoverflow.com/questions/20060556/start-an-application-from-another-application-including-parameters
