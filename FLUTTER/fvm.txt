@@ -1,0 +1,16 @@
+https://www.youtube.com/watch?v=GSamxnXIRhg
+https://blog.flutterando.com.br/%C3%A9-do-brasil-fvm-uma-forma-simples-de-gerenciar-as-vers%C3%B5es-do-flutter-6e0999ce8ad9
+
+fvm global 2.2.1
+
+where flutter
+
+fvm list
+
+fvm releases
+
+fvm install 2.10.0
+
+
+setar um projeto para usar uma versão especifica do flutter:
+fvm use 2.10.0

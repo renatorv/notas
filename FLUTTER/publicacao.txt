@@ -1,0 +1,5 @@
+ANDROID:
+flutter build appbundle
+
+CASO TENHA O ERRO => This application cannot tree shake icons fonts.
+flutter build appbundle --no-tree-shake-icons

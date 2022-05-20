@@ -1,0 +1,165 @@
+Artigo útil:
+https://medium.com/flutter-clan/push-notifications-in-flutter-1-59c7f0570137
+
+
+
+//
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:push_app/utils/push_notifications_manager.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  @override
+  void initState() {
+    PushNotificationsManager().init();
+    super.initState();
+  }
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+//
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+enum AppState {
+  foreground,
+  background,
+  terminated,
+}
+
+class PushNotificationsManager {
+  PushNotificationsManager._();
+
+  factory PushNotificationsManager() => _instance;
+
+  static final PushNotificationsManager _instance = PushNotificationsManager._();
+
+  /// Function to setup up push notifications and its configurations
+  Future<void> init() async {
+    await _setFCMToken();
+    _configure();
+  }
+
+  /// Function to ask user for push notification permissions and if provided, save FCM Token in persisted local storage.
+  void _setFCMToken() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    /// requesting permission for [alert], [badge] & [sound]. Only for iOS
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    /// saving token only if user granted access.
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String token = await messaging.getToken();
+      print('FirebaseMessaging token: $token');
+    }
+  }
+
+  /// Function to configure the functionality of displaying and tapping on notifications.
+  void _configure() async {
+    /// For iOS only, setting values to show the notification when the app is in foreground state.
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    /// handler when notification arrives. This handler is executed only when notification arrives in foreground state.
+    /// For iOS, OS handles the displaying of notification
+    /// For Android, we push local notification
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _showForegroundNotificationInAndroid(message);
+    });
+
+    /// handler when user taps on the notification.
+    /// For iOS, it gets executed when the app is in [foreground] / [background] state.
+    /// For Android, it gets executed when the app is in [background] state.
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      _handleNotification(message: message.data, appState: AppState.foreground);
+    });
+
+    /// If the app is launched from terminated state by tapping on a notification, [getInitialMessage] function will return the
+    /// [RemoteMessage] only once.
+    RemoteMessage initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+
+    /// if [RemoteMessage] is not null, this means that the app is launched from terminated state by tapping on the notification.
+    if (initialMessage != null) {
+      _handleNotification(message: initialMessage.data, appState: AppState.terminated);
+    }
+  }
+
+  void _showForegroundNotificationInAndroid(RemoteMessage message) async {}
+
+  void _handleNotification({
+    Map<String, dynamic> message,
+    AppState appState,
+  }) async {
+    print('PushNotificationsManager: _handleNotification ${message.toString()} ${appState.toString()}');
+  }
+}

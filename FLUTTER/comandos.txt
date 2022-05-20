@@ -3,8 +3,29 @@ flutter create --androidx <nome>
 
 flutter create -i swift -a java --androidx --org=app.renatorv flutter_api_rest
 
+flutter create --project-name=appvolusposingenico --platforms=android --android-language=java --org=br.com.volus ./appvolusposingenico
+
 *************************************************************************************************************************************************
 
-task wrapper(type: Wrapper){
-    gradleVersion = '7.2'
-}
+flutter create --project-name=volusviagem --platforms=android --android-language=java --org=br.com.volus ./volusviagem
+
+
+flutter create --project-name=volusviagem --platforms=android --android-language=java --org=br.com.volus ./volusviagem
+
+
+
+br.com.volus.app_volus
+
+br.com.volus.volusviagem
+
+
+android studio Task 'wrapper' not found in project ':app'.
+ADICIONAR 
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '6.7.1'
+    }
+
+EM
+D:\DEV\FLUTTER\VIAGEM\volusviagem\android\app\build.gradle
+
