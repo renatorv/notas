@@ -1,0 +1,5 @@
+netstat -ano | findstr <PORTA>
+netstat -ano | findstr 4469
+
+taskkill /PID <PORTA> /F
+taskkill /PID 17180 /F
