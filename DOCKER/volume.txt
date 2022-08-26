@@ -1,0 +1,25 @@
+https://www.alura.com.br/artigos/criando-volumes-com-docker
+
+docker volume create dados-do-banco
+
+docker volume ls
+
+docker container run --name db -v dados-do-banco:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=alura mysql
+
+em outro terminal:
+
+docker container exec -it db /bin/bash
+
+Ctrl + P + Q
+
+docker container stop db
+
+docker container run --name banco -v dados-do-banco:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=alura mysql
+
+docker container exec -it banco /bin/bash
+
+mysql -u root -p
+
+show databases;
+
+docker volume rm dados-do-banco
