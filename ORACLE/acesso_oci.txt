@@ -7,6 +7,10 @@ ssh -i /Users/renatoalves/.ssh/id_rsa < Username >@< ip_maquina >
 
 ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@129.159.81.170
 
+ssh-keygen -t rsa
+
+ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@141.148.79.61
+
 # Liberar portas ==> https://www.youtube.com/watch?v=Jxs9M8qZkRM&t=175s
 	sudo apt update
 	sudo apt install nginx
@@ -20,3 +24,51 @@ ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@129.159.81.170
 	sudo reboot
 	sudo systemctl status nginx
 	sudo ufw status
+
+- CONFIGURAR SENHA DE ROOT NO UBUNTU:
+https://www.cyberciti.biz/faq/change-root-password-ubuntu-linux/
+
+- CONFIGURAR DOCKER NO UBUNTU:
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-pt
+
+- ALIAS NO UBUNTU:
+sudo gedit ~/.bashrc
+source ~/.bashrc
+
+
+ENTRAR E DEFINIR ACESSO ROOT:
+
+sudo -i
+bash <(wget -qO- https://raw.githubusercontent.com/leitura/senharoot/main/senharoot.sh)
+
+
+ABRIR PORTAS SERVER ORACLE:
+
+sudo apt-get update
+sudo apt install firewalld 
+sudo firewall-cmd --zone=public --permanent --add-port=9443/tcp  (rodar esse comando para cada porta que se for abrir)
+sudo firewall-cmd --reload 
+sudo firewall-cmd --zone=public --list-ports
+
+
+
+SCRIPT SSHPLUS:
+
+apt update -y && apt upgrade -y && wget https://raw.githubusercontent.com/rodrigo12xd/SSHPLUS/master/Plus && chmod 777 Plus && ./Plus
+
+
+
+
+https://www.youtube.com/watch?v=xYF8Rr9ik7Q&t=1s
+
+
+# ESSE FUNCIONOU!!!!!!
+https://www.youtube.com/watch?v=OwF_dNejz0A
+
+https://srcjp.com.br/2022/09/13/como-abrir-portas-na-vps-gratuita-da-oracle-cloud-free-tier-os-linux/
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT 
+
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 443 -j ACCEPT
+
+sudo netfilter-persistent save
