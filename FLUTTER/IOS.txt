@@ -1,0 +1,37 @@
+https://www.youtube.com/watch?v=ykiD5wqwSe4&t=85s
+
+1 - Enroll the Apple Developer Program: https://developer.apple.com/programs/
+1 - Inscreva-se no Apple Developer Program: https://developer.apple.com/programs/
+
+2 - Set up all info and sign all Contracts under 'Agreements, Tax and Banking'
+2 - Configure todas as informações e assine todos os contratos em 'Acordos, impostos e bancos' [ tem um botão em appstoreconnect.apple.com ]
+
+3 - Create an XCode Project
+
+4 - Make sure that your Blunde ID is registered. If not just add than remove the In-App Purchase Capability.
+4 - Certifique-se de que seu ID do Pacote esteja registrado. Se não apenas adicionar, remova os recursos de compra no aplicativo.
+[
+	conferir em Identifiers.
+	
+	no XCode em Signing & Capabilities => + Capability => procurar por In-App Purchase e clique duas vezes nele. Depois pode remover ele.
+]
+
+5 - Create a new App under MyApps in App Store Connect.
+
+6 - Make sure you have an AppIcon.appiconset created and added. Use 'Asset Catalog Creator Pro' available in 'Setapp'
+
+7 - Set the version and build numbers
+7 - Defina a versão e os números de compilação
+[
+	versão: é a nome da versão que aparece na App Store
+	compilação: são builds que fazemos compilação
+	Detalhe: caso queira subir um app com a msm versão é possível, porém a compilação [ build ] deve ser diferente.
+]
+
+8 - Make sure that you have add your 'Apple ID' under Xcode/Preferences...../Accounts
+
+9 - Do a final  Build & Run
+
+10 - Clean Build Folder
+
+11 - Archive

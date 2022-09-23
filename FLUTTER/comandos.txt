@@ -1,5 +1,6 @@
 
-flutter create --androidx <nome>
+CRIAÇÃO DE PROJETO FLUTTER:
+flutter create --project-name get_iniciando --org br.com.renatorv.jornadagetx --platforms android,ios -i swift -a kotlin get_iniciando
 
 flutter create -i swift -a java --androidx --org=app.renatorv flutter_api_rest
 
@@ -8,13 +9,6 @@ flutter create --project-name=appvolusposingenico --platforms=android --android-
 *************************************************************************************************************************************************
 
 flutter create --project-name=volusviagem --platforms=android --android-language=java --org=br.com.volus ./volusviagem
-
-
-flutter create --project-name=volusviagem --platforms=android --android-language=java --org=br.com.volus ./volusviagem
-
-
-
-br.com.volus.app_volus
 
 br.com.volus.volusviagem
 
