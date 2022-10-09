@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "Iniciando a configuração..."
+
+sudo apt update
+
+# Libera Portas
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 443 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 80 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 3306 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 3306 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 8080 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 9443 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 9443 -j ACCEPT
+
+sudo netfilter-persistent save
+
+sudo apt update
+
+echo "Configuração finalizada!"

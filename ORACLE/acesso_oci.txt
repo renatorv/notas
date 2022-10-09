@@ -1,62 +1,48 @@
-Acesso Oracle
+## ACESSAR MAQUINA ORACLE CLOUD:
 
 # Criar chave: ssh-keygen -t rsa
 	MAC: /Users/renatoalves/.ssh/id_rsa
 
 ssh -i /Users/renatoalves/.ssh/id_rsa < Username >@< ip_maquina >
 
-ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@129.159.81.170
+ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@<ip_maquina>
 
 ssh-keygen -t rsa
 
-ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@141.148.79.61
+ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@<ip_maquina>
 
-# Liberar portas ==> https://www.youtube.com/watch?v=Jxs9M8qZkRM&t=175s
-	sudo apt update
-	sudo apt install nginx
-	sudo systemctl start nginx
-	sudo ufw status -> vai estar inativo
-	sudo apt remove netfilter-persistent
-	sudo ufw allow 22/tcp
-	sudo ufw enable
-	sudo ufw status
-	sudo ufw allow 80/tcp
-	sudo reboot
-	sudo systemctl status nginx
-	sudo ufw status
+
+## COPIAR ARQUIVOS PARA O SERVIDOR:
+scp known_hosts.old ubuntu@<ip_maquina>:/home/ubuntu/scripts
+OU
+rsync -av --delete --rsh=ssh teste ubuntu@<ip_maquina>:/home/ubuntu
+
+
+## CRIAR EXECUTÁVEL
+export PATH=$PATH:/home/ubuntu/scripts/configura => inseri o arquivo configura no PATH
+chmod +x configura => dá permissão de execução arquivo
+
+
+## CONFIGURAR DOCKER NO UBUNTU:
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-pt
+
+
+## INSTALAÇÃO PORTAINER:
+https://phoenixnap.com/kb/docker-portainer-install
+
+
+## INSTALAÇÃO DO NGINX:
+sudo apt-get update
+sudo apt-get install nginx
+
 
 - CONFIGURAR SENHA DE ROOT NO UBUNTU:
 https://www.cyberciti.biz/faq/change-root-password-ubuntu-linux/
 
-- CONFIGURAR DOCKER NO UBUNTU:
-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-pt
 
 - ALIAS NO UBUNTU:
 sudo gedit ~/.bashrc
 source ~/.bashrc
-
-
-ENTRAR E DEFINIR ACESSO ROOT:
-
-sudo -i
-bash <(wget -qO- https://raw.githubusercontent.com/leitura/senharoot/main/senharoot.sh)
-
-
-ABRIR PORTAS SERVER ORACLE:
-
-sudo apt-get update
-sudo apt install firewalld 
-sudo firewall-cmd --zone=public --permanent --add-port=9443/tcp  (rodar esse comando para cada porta que se for abrir)
-sudo firewall-cmd --reload 
-sudo firewall-cmd --zone=public --list-ports
-
-
-
-SCRIPT SSHPLUS:
-
-apt update -y && apt upgrade -y && wget https://raw.githubusercontent.com/rodrigo12xd/SSHPLUS/master/Plus && chmod 777 Plus && ./Plus
-
-
 
 
 https://www.youtube.com/watch?v=xYF8Rr9ik7Q&t=1s
@@ -67,11 +53,32 @@ https://www.youtube.com/watch?v=OwF_dNejz0A
 
 https://srcjp.com.br/2022/09/13/como-abrir-portas-na-vps-gratuita-da-oracle-cloud-free-tier-os-linux/
 
-sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT 
-
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
 sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 443 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 80 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 3306 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 3306 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 8080 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 8080 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 9443 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 9443 -j ACCEPT
 
 sudo netfilter-persistent save
 
-# VER PORTAS ABERTAS
-sudo firewall-cmd --zone=public --list-ports
+
+
+
+
+
+## ENTRAR E DEFINIR ACESSO ROOT:
+sudo -i
+bash <(wget -qO- https://raw.githubusercontent.com/leitura/senharoot/main/senharoot.sh)
+
+
+## SCRIPT SSHPLUS:
+apt update -y && apt upgrade -y && wget https://raw.githubusercontent.com/rodrigo12xd/SSHPLUS/master/Plus && chmod 777 Plus && ./Plus
