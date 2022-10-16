@@ -68,6 +68,12 @@ sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 8080 -j ACCEPT
 sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 9443 -j ACCEPT
 sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 9443 -j ACCEPT
 
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 9000 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 9000 -j ACCEPT
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 2911 -j ACCEPT
+sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 2911 -j ACCEPT
+
 sudo netfilter-persistent save
 
 

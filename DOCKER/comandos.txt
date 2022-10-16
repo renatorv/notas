@@ -1,0 +1,4 @@
+# LOGS
+docker logs ba85
+
+docker logs --follow ba85
