@@ -1,3 +1,9 @@
+# REMOVER ARQUIVOS OU PASTAS VIA .gitignore:
+1 - adicionar ao .gitignore
+2 - git rm --cached <file>
+    git rm -r --cached <folder>
+
+
 dentro da pasta...executar no cmd
 
 echo "# despesas" >> README.md

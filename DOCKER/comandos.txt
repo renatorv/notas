@@ -2,3 +2,89 @@
 docker logs ba85
 
 docker logs --follow ba85
+
+
+## DOCKER-COMPOSE:
+
+docker-compose up -d
+docker-compose ps
+docker-compose down
+docker-compose stop
+
+
+https://www.youtube.com/watch?v=rJHnpJtbBC8
+
+docker container run -it ubuntu bash
+
+PUBLICAR PORTA:
+
+docker container run -p 8000:80 nginx
+
+EDITAR ARQUIVOS DO CONTAINER:
+
+docker exec -it <nome/id> bash
+docker exec -it e6a60e55522e bash
+[
+	apt update
+	apt install vim -y
+	cd /usr/share/nginx/html/
+	ls
+	vim index.html
+]
+
+COMPARTILHAR VOLUMES ( PASTAS ):
+
+docker container run -p 8000:80 -v caminho_da_pasta:caminho_no_container nginx
+docker container run -p 8000:80 -v $(pwd):/usr/share/nginx/html/ nginx
+
+
+CRIAR UMA IMAGEM: arquivo Dockerfile
+
+
+# FROM imagem base
+FROM nginx:latest
+
+# COPY copia o arquivo index.html para a pasta padrão do nginx
+COPY html/index.html /usr/share/nginx/html/index.html
+
+# EXPOSE expoe a porta 80
+EXPOSE 80
+
+# CMD roda a inicialização do nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
+# GERAR A IMAGEM
+docker build -t <nome> .
+docker build -t renatorv/teste:latest .
+
+ENVIAR PARA O DOCKER HUB => docker push <nome_da_imagem>
+
+
+INTEGRAÇÃO DE APLICAÇÕES (CONTAINERS) COM DOCKER COMPOSE:
+cria vários containers de uma vez: docker-compose.yaml
+
+
+version: 3
+
+services:
+	mysql:
+		image: mysql:5.7
+		container_name: mysql
+		restart: always
+		platform: linux/amd64
+		environment:
+			MYSQL_ROOT_PASSWORD: root
+			MYSQL_DATABASE: fullcycle
+			MYSQL_PASSWORD: root
+		ports:
+			- 3306:3306
+		volumes:
+			- ./mysql:/var/lib/mysql
+			
+				
+docker-compose up -d
+
+entrar no mysql: docker-compose exec mysql bash
+mysql -uroot -p fullcycle

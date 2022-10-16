@@ -26,6 +26,9 @@ chmod +x configura => dá permissão de execução arquivo
 ## CONFIGURAR DOCKER NO UBUNTU:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-pt
 
+## CONFIGURAR DOCKER-COMPOSE NO UBUNTU:
+https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04
+
 
 ## INSTALAÇÃO PORTAINER:
 https://phoenixnap.com/kb/docker-portainer-install
