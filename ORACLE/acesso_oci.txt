@@ -1,3 +1,9 @@
+## ACESSAR MAQUINA ORACLE CLOUD COM KEYS:
+ssh -i .\ssh-key-2022-11-01.key ubuntu@150.136.17.164
+[
+	COMANDO DEVE SER EXECUTADO DENTRO DA PASTA ONDE ESTÃO OS ARQUIVOS: .key E .key.pub
+]
+
 ## ACESSAR MAQUINA ORACLE CLOUD:
 
 # Criar chave: ssh-keygen -t rsa
