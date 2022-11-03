@@ -1,0 +1,31 @@
+https://github.com/flutter/flutter/issues/17941
+http://romannurik.github.io/AndroidAssetStudio/icons-notification.html#source.type=clipart&source.clipart=ac_unit&source.space.trim=1&source.space.pad=0&name=ic_stat_onesignal_default
+https://stackoverflow.com/questions/62958505/flutter-notification-icon-showing-white-circle
+https://www.google.com/search?q=%2300ff00+color&rlz=1C1FCXM_pt-PTBR999BR999&oq=%2300FF00&aqs=chrome.1.69i57j0i512j0i30l7j0i10i30.5580j0j15&sourceid=chrome&ie=UTF-8
+
+ALTERAR COR DO ICONE NO ANDROID:
+C:\Users\renato.alves\Desktop\BANCO_DIGITAL\AppVolusBank\android\app\src\main\res\values\styles.xml
+    </style>
+    <color name="colorAccent">#76C96E</color>
+</resources>
+
+C:\Users\renato.alves\Desktop\BANCO_DIGITAL\AppVolusBank\android\app\src\main\AndroidManifest.xml
+<application
+        android:label="Vólus Bank"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <meta-data
+           android:name="com.google.firebase.messaging.default_notification_icon"
+           android:resource="@drawable/iconefcm" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/colorAccent" />
+
+SETAR ICONE AQUI:
+   <application
+        android:label="Vólus Bank"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <meta-data
+           android:name="com.google.firebase.messaging.default_notification_icon"
+           android:resource="@drawable/iconefcm" />
+
+* iconefcm => é o nome dentro das pastas drawable-*** em C:\Users\renato.alves\Desktop\BANCO_DIGITAL\AppVolusBank\android\app\src\main\res
