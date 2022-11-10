@@ -1,0 +1,7 @@
+VERIFICAR SE UM CONTROLLER ESTÁ ATIVO E SE NECESSÁRIO DELETAR ELE 
+DA MEMORIA:
+
+    bool controllerValid = Get.isRegistered<LocalAuthController>();
+    if (controllerValid) {
+      Get.delete<LocalAuthController>();
+    }

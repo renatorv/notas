@@ -1,3 +1,69 @@
+USEI NO VOLUS BANK:
+https://www.youtube.com/watch?v=KQuHbXPPQu8
+https://www.codigocorrecto.com/flutter/forma-correcta-de-hacer-un-splashscreen-en-flutter/
+
+1- Vamos a la carpeta Android -> apps -> src -> main -> res, aquí encontraremos las carpetas en las que vamos a trabajar.
+
+2- Lo primero que haremos será crear un archivo dentro de la carpeta values. Dentro de values vamos a crear un archivo llamado color.xml 
+donde vamos a definir el color que tendrá nuestro splashscreen, vamos a escribir el siguiente código dentro de el:
+<!-- color.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#0B5DAE</color>
+</resources>
+
+3- Luego dentro de la carpeta drawable y también dentro de la carpeta drawable-v21 vamos a crear un archivo llamado bg_color.xml y vamos a 
+escribir el siguiente código.
+<!-- bg_color.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+          <solid android:color="@color/primary" />
+
+</shape>
+
+4- Ahora tenemos que modificar el archivo launch_background.xml y vamos realizar un pequeño cambio en la línea 
+<item android:drawable=»@android:color/white» /> y lo reemplazamos por <item android:drawable=»@drawable/bg_color» />. 
+El archivo debe quedar así:
+<!-- launch_background.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_color" />
+
+    <!-- You can insert your own image assets here -->
+    <!-- <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/launch" />
+    </item> -->
+</layer-list>
+
+5- Ahora tenemos que colocar la imagen de nuestra aplicación, tenemos que copiar la imagen (de preferencia en formato png y con transparencia). 
+Tenemos que copiar la imagen dentro de las carpetas que comienzan con mipmap.
+
+6. El texto que <item> que está comentado en el archivo launch_background.xml vamos a descomentarlo. También vamos a cambiar la propiedad android:src 
+de la etiqueta bitmap, pondremos el nombre que tenga el archivo de nuestra imagen. Debe quedar más o menos así:
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_color" />
+
+    <!-- You can insert your own image assets here -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/splash" />
+    </item>
+</layer-list>
+
+7- Para terminar no olvides modificar también el archivo launch_background.xml de la carpeta drawable-v21. Una vez que tengas varios archivos modificados, 
+corremos nuestra aplicación y listo.
+
+
+
+==============================================================================================================================================================
+
 https://www.youtube.com/watch?v=nuOrUhOYU0Y
 
 https://medium.com/flutter-community/flutter-2019-real-splash-screens-tutorial-16078660c7a1
