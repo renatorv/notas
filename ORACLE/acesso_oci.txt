@@ -18,6 +18,12 @@ ssh-keygen -t rsa
 ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@<ip_maquina>
 
 
+ssh -i /Users/renatoalves/.ssh/id_rsa ubuntu@141.148.49.151
+
+
+
+
+
 ## COPIAR ARQUIVOS PARA O SERVIDOR:
 scp known_hosts.old ubuntu@<ip_maquina>:/home/ubuntu/scripts
 OU

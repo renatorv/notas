@@ -1,0 +1,23 @@
+DESABILITA O BOTÃO VOLTAR DO S.O.
+
+https://flutterdesk.com/disable-or-override-back-button-in-flutter/
+
+https://flutteragency.com/how-to-execute-when-clicking-back-button-in-flutter/
+
+
+// Desabilita o botão 'BACK' do sistema operacional
+return WillPopScope(
+    onWillPop: () async {
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+        content:
+            Text('Back button desabilitado!\nVocê não pode voltar para tela anterior.'),
+        backgroundColor: Colors.red,
+        ),
+    );
+    return false;
+    },
+    child: Scaffold(
+    appBar: BankAppbar(
+        texto: '',
+        icone: Icons.close,
