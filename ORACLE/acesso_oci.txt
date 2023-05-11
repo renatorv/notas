@@ -92,7 +92,8 @@ sudo iptables -I INPUT 6 -m state --state NEW -p udp --dport 2911 -j ACCEPT
 sudo netfilter-persistent save
 
 
-
+# TESTAR Doneo.io's
+https://dev.to/armiedema/opening-up-port-80-and-443-for-oracle-cloud-servers-j35
 
 
 
