@@ -1,2 +1,6 @@
 # VER PATH
 cat /etc/paths
+
+INSTALAÇÃO OH MY ZSH
+https://www.youtube.com/watch?v=SVh4osULjP4
+https://gist.github.com/n1snt/454b879b8f0b7995740ae04c5fb5b7df
