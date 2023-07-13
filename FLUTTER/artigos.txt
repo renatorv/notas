@@ -1,0 +1,16 @@
+https://medium.com/@diegoveloper/flutter-collapsing-toolbar-sliver-app-bar-14b858e87abe
+
+https://medium.com/flutter-community/create-simple-animations-for-your-articles-with-flutter-7769085108d1
+
+https://itnext.io/flutter-file-structure-55317a2e14f7
+
+https://medium.com/dlt-labs-publication/using-themes-in-flutter-86b34b1f9d8a
+
+https://medium.com/coding-with-flutter/flutter-layouts-walkthrough-pageview-listview-gridview-slivers-customscrollview-48cf94b2847a
+
+https://genotechies.medium.com/flutter-button-types-and-what-are-the-deprecated-button-types-and-how-to-replace-them-c8506b8c398a
+
+https://michalmalewicz.medium.com/there-are-five-levels-of-ui-skill-62e0e7700855
+
+https://medium.flutterdevs.com/custom-animated-bottomnavigation-bar-in-flutter-65293e231e4a
+

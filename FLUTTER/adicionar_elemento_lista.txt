@@ -1,0 +1,17 @@
+
+No app viagem, precisei adicionar um menu manualmente a mais nos serviços.
+Acabou ficando na api, mais pode ajudar!!
+
+
+var x = result['mensagem'][0]['cartoes'][0]['servicos'];
+
+x.add(<String, dynamic>{
+    'chave': 'Configuracoes',
+    'icone': 'S-0xe88e',
+    'rota': '7',
+    'titulo': 'configuracoes',
+});
+
+
+
+  Future<Map<String, dynamic>> realizaLoginAppVolus(String cpf) async {
