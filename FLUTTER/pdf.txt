@@ -1,0 +1,195 @@
+FIZ NO APP DE VÓLUS VIAGEM:
+
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+  Future saveAndShare() async {
+    if (listaLancamentos.isNotEmpty) {
+      // Indice
+      int _indice = 0;
+      Responsive responsive = Responsive(Get.context!);
+
+      DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm");
+
+      String _now = dateFormat.format(DateTime.now());
+
+      final directory = await getApplicationDocumentsDirectory();
+      final pdf = pw.Document(author: 'Vólus', compress: true, pageMode: PdfPageMode.fullscreen, title: 'Extrato Vólus Viagem');
+
+      final ByteData bytes = await rootBundle.load('assets/images/Cabecalho_Retrato.png');
+      final Uint8List byteList = bytes.buffer.asUint8List();
+
+      var len = listaLancamentos.length;
+      // Número de lançamentos no arquivo .pdf
+      var lancamentosPorPagina = 50;
+      var chunks = [];
+
+      for (var i = 0; i < len; i += lancamentosPorPagina) {
+        var end = (i + lancamentosPorPagina < len) ? i + lancamentosPorPagina : len;
+        chunks.add(listaLancamentos.sublist(i, end));
+      }
+
+      for (int i = 0; i < chunks.length; i++) {
+        pdf.addPage(
+          pw.MultiPage(
+            pageFormat: PdfPageFormat(29.7 * PdfPageFormat.cm, 42 * PdfPageFormat.cm),
+            build: (pw.Context context) {
+              return <pw.Widget>[
+                pw.Column(
+                  mainAxisAlignment: pw.MainAxisAlignment.start,
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Image(
+                      pw.MemoryImage(
+                        byteList,
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 8),
+                      child: pw.Row(
+                        children: [
+                          pw.Text(
+                            'Data/hora: ',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: responsive.dp(1.6)),
+                          ),
+                          pw.Text(_now, style: pw.TextStyle(fontSize: responsive.dp(1.4))),
+                        ],
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 8),
+                      child: pw.Row(
+                        children: [
+                          pw.Text(
+                            'Nome: ',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: responsive.dp(1.6)),
+                          ),
+                          pw.Text(
+                            funcoesAuxiliares.normaliseName(cartaoUsuario.nomecartao),
+                            style: pw.TextStyle(fontSize: responsive.dp(1.4)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 8),
+                      child: pw.Row(
+                        children: [
+                          pw.Text(
+                            'Gastos: ',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: responsive.dp(1.6)),
+                          ),
+                          pw.Text(gastosPeriodo != '' ? gastosPeriodo : '', style: pw.TextStyle(fontSize: responsive.dp(1.4))),
+                        ],
+                      ),
+                    ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.only(left: 8, right: 8),
+                      child: pw.Row(
+                        mainAxisSize: pw.MainAxisSize.max,
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        children: [
+                          pw.Expanded(
+                            child: pw.Center(
+                              child: pw.Text(
+                                _fechamentoPeriodo.value,
+                                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: responsive.dp(1.6)),
+                              ),
+                            ),
+                          ),
+                          pw.Text(
+                            '${i + 1}/${chunks.length}',
+                            style: pw.TextStyle(
+                              color: PdfColors.grey700,
+                              fontSize: responsive.dp(1.6),
+                              fontWeight: pw.FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    pw.Divider(borderStyle: pw.BorderStyle.solid),
+                    pw.ListView.separated(
+                      separatorBuilder: (_, index) => pw.SizedBox(height: responsive.dp(.6)),
+                      itemCount: chunks[i].length,
+                      itemBuilder: (_, index) {
+                        if (index == 0) {
+                          _indice = 0;
+                        } else {
+                          _indice = _indice + 1;
+                        }
+
+                        final LancamentoModel lancamento = chunks[i][index];
+                        return pw.Container(
+                          color: index % 2 == 0 ? PdfColors.grey300 : null,
+                          child: pw.Container(
+                            margin: pw.EdgeInsets.only(top: 1, bottom: 1),
+                            padding: pw.EdgeInsets.only(top: 1, bottom: 1, right: 8, left: 8),
+                            child: pw.Row(
+                              children: [
+                                pw.Text(
+                                  lancamento.dataLancamento,
+                                  textScaleFactor: .64,
+                                  style: pw.TextStyle(
+                                    color: PdfColors.grey700,
+                                    fontSize: responsive.dp(1.6),
+                                    fontWeight: pw.FontWeight.bold,
+                                  ),
+                                ),
+                                pw.SizedBox(width: 18),
+                                pw.Expanded(
+                                  child: pw.Text(
+                                    lancamento.nomeEstabelecimento.toUpperCase(),
+                                    textScaleFactor: .64,
+                                    style: pw.TextStyle(
+                                      color: PdfColors.black,
+                                      fontSize: responsive.dp(1.6),
+                                    ),
+                                  ),
+                                ),
+                                pw.Expanded(
+                                  child: pw.Align(
+                                    alignment: pw.Alignment.bottomRight,
+                                    child: pw.Text(
+                                      lancamento.valorformatado.replaceAll('-', ''),
+                                      textScaleFactor: .64,
+                                      style: pw.TextStyle(
+                                        fontSize: responsive.dp(1.6),
+                                        fontWeight: lancamento.sinal == 'C' ? pw.FontWeight.bold : pw.FontWeight.normal,
+                                        color: lancamento.sinal == 'C' ? PdfColors.green : PdfColors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ];
+            },
+          ),
+        );
+      }
+
+      final file = File('${directory.path}/ExtratoVolusViagem.pdf');
+      await file.writeAsBytes(await pdf.save());
+
+      const text = 'Extrato - Vólus Viagem';
+      await Share.shareXFiles([XFile('${directory.path}/ExtratoVolusViagem.pdf')], text: text);
+    } else {
+      _message(
+        MessageModel(
+          title: 'Atenção',
+          message: 'Período sem lançamentos.',
+          type: MessageType.info,
+        ),
+      );
+    }
+  }

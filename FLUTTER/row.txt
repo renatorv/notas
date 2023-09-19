@@ -1,0 +1,29 @@
+
+EM UMA ROW, DETERMINAR QUE UMA PARTE DA ROW SEJA MENOR QUE O OUTRO:
+[ FIZ NO PDF DO APP VÓLUS VIAGEM ]
+
+pw.Padding(
+        padding: const pw.EdgeInsets.only(left: 8, right: 8),
+        child: pw.Row(
+        mainAxisSize: pw.MainAxisSize.max,
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+            pw.Expanded(
+            child: pw.Center(
+                child: pw.Text(
+                _fechamentoPeriodo.value,
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: responsive.dp(1.6)),
+                ),
+            ),
+            ),
+            pw.Text(
+            '${i + 1}/${chunks.length}',
+            style: pw.TextStyle(
+                color: PdfColors.grey700,
+                fontSize: responsive.dp(1.6),
+                fontWeight: pw.FontWeight.bold,
+            ),
+            ),
+        ],
+        ),
+    ),
