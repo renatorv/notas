@@ -1,0 +1,238 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:volus_bank/app/core/mixins/validator_mixin.dart';
+import 'package:volus_bank/app/core/ui/volus_state.dart';
+import 'package:volus_bank/app/helpers/ui/widgets/button.dart';
+import 'package:volus_bank/app/helpers/ui/widgets/text_input.dart';
+import 'package:volus_bank/app/modules/auth/login/sign_in/login_controller.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends VolusState<LoginPage, LoginController>
+    with ValidatorMixin {
+  final _key = GlobalKey<FormState>();
+  final _cpfEc = TextEditingController(text: Get.arguments?['cpf'] ?? '');
+  final _senhaEc = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Scaffold(
+      backgroundColor: const Color(0xFF202020),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: screenWidth * 0.05, top: screenHeight * 0.02),
+                    child: IconButton(
+                      onPressed: () => Get.back(),
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Colors.white,
+                      ),
+                      iconSize: 40,
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: screenWidth * 0.05, top: screenHeight * 0.15),
+                    child: SizedBox(
+                      width: screenWidth * 0.5,
+                      child: Text(
+                        'Entrar\nna conta.',
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Inter-V',
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: screenHeight * 0.05, bottom: screenHeight * 0.05),
+                child: SizedBox(
+                  width: screenWidth * 0.9,
+                  child: Form(
+                    key: _key,
+                    child: Column(
+                      children: [
+                        TextInput(
+                          label: 'CPF',
+                          labelStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          mask: [controller.maskCpf],
+                          controller: _cpfEc,
+                          validator: (value) => combine([
+                            () => isNotEmpty(value),
+                            () =>
+                                lengthCheck(value, 14, 'insira um cpf válido'),
+                          ]),
+                          style: const TextStyle(color: Colors.white),
+                          inputType: TextInputType.number,
+                          colorBorder: Colors.white,
+                        ),
+                        Obx(
+                          () => TextInput(
+                            label: 'Senha',
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            controller: _senhaEc,
+                            validator: isNotEmpty,
+                            suffixIcon: IconButton(
+                              onPressed: () => controller.showPassword.toggle(),
+                              icon: controller.showPassword.isTrue
+                                  ? const Icon(
+                                      Icons.remove_red_eye_outlined,
+                                      size: 25,
+                                    )
+                                  : const Icon(
+                                      Icons.visibility_off_outlined,
+                                      size: 25,
+                                    ),
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            obscureText: controller.showPassword.value,
+                            style: const TextStyle(color: Colors.white),
+                            colorBorder: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: screenHeight * 0.05,
+                    width: screenWidth * 0.9,
+                    child: Button(
+                      label: 'ENTRAR',
+                      onPress: () {
+                        if (_key.currentState?.validate() ?? false) {
+                          String cpf = _cpfEc.text
+                              .replaceAll('.', '')
+                              .replaceAll('-', '')
+                              .replaceAll(' ', '');
+                          controller.login(cpf, _senhaEc.text);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenHeight * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () => Get.toNamed('/forgot-password'),
+                    child: const Text(
+                      'ESQUECI MINHA SENHA',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontFamily: 'Inter-V',
+                        color: Color(0xFF76C96E),
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+import 'dart:developer';
+import 'package:get/get.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:volus_bank/app/core/exceptions/unauthorized_exception.dart';
+import 'package:volus_bank/app/core/mixins/loader_mixin.dart';
+import 'package:volus_bank/app/helpers/utils/device_info.dart';
+import 'package:volus_bank/app/repositories/auth_repository/auth_repository_impl.dart';
+import 'package:volus_bank/app/services/login/login_service_impl.dart';
+import '../../../../helpers/ui/widgets/modal_notifications.dart';
+
+class LoginController extends GetxController with LoaderMixin {
+  final loading = false.obs;
+
+  @override
+  void onInit() async {
+    loaderListener(loading);
+    _deviceId = await deviceInfo.getInfo();
+    super.onInit();
+  }
+
+  RxBool showPassword = true.obs;
+  final _maskCpf = MaskTextInputFormatter(
+    mask: '###.###.###-##',
+    type: MaskAutoCompletionType.lazy,
+  );
+  MaskTextInputFormatter get maskCpf => _maskCpf;
+  Map<String, dynamic> argumentos = Get.arguments ?? {};
+  DeviceInfo deviceInfo = DeviceInfo();
+  late final _deviceId;
+
+  Future<void> login(String username, String password) async {
+    final loginService = LoginServiceImpl(
+      authRepository: Get.put(AuthRepositoryImpl()),
+    );
+
+    try {
+      loading(true);
+      await loginService
+          .execute(
+        username: username,
+        password: password,
+        deviceId: _deviceId['id'],
+      )
+          .then(
+        (value) {
+          loading(false);
+          value['trocouAparelho']
+              ? Get.toNamed('/info-page', arguments: {
+                  "username": username,
+                  "modeloDevice": value['modeloDevice']
+                })
+              : Get.toNamed('/home-pf');
+        },
+      );
+      // loading(false);
+    } on Exception catch (e) {
+      loading(false);
+      if (e is UnauthorizedException) {
+        Get.bottomSheet(ModalNotifications(message: e.message));
+      } else {
+        Get.bottomSheet(
+            ModalNotifications(message: 'Ocorreu um erro inesperado'));
+      }
+      log('ocorreu um erro', error: e);
+    }
+  }
+}
+==================================
